@@ -1,62 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Comic Premium Design System - Promo 2001 San Gabriel */
+/* Vintage Comic Design System — Promo 2001 San Gabriel */
 @layer base {
   :root {
-    --background: 45 60% 97%;
-    --foreground: 222 60% 12%;
+    /* Aged paper / cream */
+    --background: 40 45% 90%;
+    --foreground: 25 40% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 60% 12%;
+    --card: 40 55% 94%;
+    --card-foreground: 25 40% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 60% 12%;
+    --popover: 40 55% 94%;
+    --popover-foreground: 25 40% 12%;
 
-    /* Azul Jesuita */
-    --primary: 222 70% 28%;
-    --primary-foreground: 45 100% 96%;
+    /* Azul Jesuita profundo */
+    --primary: 218 75% 28%;
+    --primary-foreground: 40 55% 94%;
 
-    /* Oro / Amarillo vibrante */
-    --secondary: 45 95% 55%;
-    --secondary-foreground: 222 70% 18%;
+    /* Oro / mostaza vintage */
+    --secondary: 40 90% 52%;
+    --secondary-foreground: 25 50% 12%;
 
-    --muted: 45 30% 92%;
-    --muted-foreground: 222 20% 35%;
+    --muted: 40 30% 82%;
+    --muted-foreground: 25 25% 30%;
 
-    /* Turquesa */
-    --accent: 178 65% 48%;
-    --accent-foreground: 222 70% 18%;
+    /* Turquesa vintage */
+    --accent: 180 55% 42%;
+    --accent-foreground: 40 55% 96%;
 
-    /* Naranja */
-    --orange: 22 92% 58%;
-    --orange-foreground: 0 0% 100%;
+    /* Naranja explosivo (estilo bocadillo cómic) */
+    --orange: 18 88% 52%;
+    --orange-foreground: 40 55% 96%;
 
-    /* Verde */
-    --green: 145 55% 42%;
-    --green-foreground: 0 0% 100%;
+    /* Verde cómic */
+    --green: 145 55% 35%;
+    --green-foreground: 40 55% 96%;
 
-    --destructive: 358 75% 55%;
-    --destructive-foreground: 0 0% 100%;
+    /* Rojo cómic */
+    --red: 358 75% 48%;
+    --red-foreground: 40 55% 96%;
 
-    --ink: 222 70% 8%;
+    --destructive: 358 75% 48%;
+    --destructive-foreground: 40 55% 96%;
 
-    --border: 222 70% 8%;
-    --input: 214 31% 91%;
-    --ring: 222 70% 28%;
+    /* Tinta */
+    --ink: 25 50% 8%;
 
-    --radius: 1.25rem;
+    --border: 25 50% 8%;
+    --input: 40 30% 82%;
+    --ring: 218 75% 28%;
 
-    /* Comic shadows */
+    --radius: 0.5rem;
+
+    /* Sombras de cómic duras */
     --shadow-comic: 6px 6px 0 0 hsl(var(--ink));
     --shadow-comic-sm: 3px 3px 0 0 hsl(var(--ink));
     --shadow-comic-lg: 10px 10px 0 0 hsl(var(--ink));
-
-    /* Halftone gradient */
-    --halftone: radial-gradient(hsl(var(--ink) / 0.15) 1px, transparent 1.5px);
   }
 }
 
@@ -68,9 +71,13 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Nunito', system-ui, sans-serif;
+    /* Textura de papel envejecido + halftone sutil */
+    background-color: hsl(var(--background));
     background-image:
-      radial-gradient(hsl(var(--primary) / 0.06) 1.5px, transparent 1.5px);
-    background-size: 22px 22px;
+      radial-gradient(hsl(var(--ink) / 0.08) 1px, transparent 1.2px),
+      radial-gradient(hsl(25 50% 35% / 0.05) 1px, transparent 1px);
+    background-size: 6px 6px, 14px 14px;
+    background-position: 0 0, 3px 3px;
   }
 
   h1, h2, h3, h4 {
@@ -81,13 +88,17 @@
 
   .font-display {
     font-family: 'Bangers', 'Fredoka', sans-serif;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
+    font-weight: 400;
   }
 }
 
 @layer components {
-  .comic-border {
-    @apply border-[3px] border-foreground;
+  .ink-border {
+    @apply border-[3px] border-ink;
+  }
+  .ink-border-thick {
+    @apply border-[5px] border-ink;
   }
   .comic-shadow {
     box-shadow: var(--shadow-comic);
@@ -98,16 +109,66 @@
   .comic-shadow-lg {
     box-shadow: var(--shadow-comic-lg);
   }
+
+  /* Halftone overlay */
   .halftone {
-    background-image: var(--halftone);
-    background-size: 8px 8px;
+    background-image: radial-gradient(hsl(var(--ink) / 0.3) 1px, transparent 1.4px);
+    background-size: 5px 5px;
   }
+  .halftone-light {
+    background-image: radial-gradient(hsl(var(--ink) / 0.15) 1px, transparent 1.2px);
+    background-size: 6px 6px;
+  }
+
+  /* Panel de cómic */
   .panel {
-    @apply comic-border comic-shadow bg-card rounded-[var(--radius)];
+    @apply ink-border-thick bg-card relative;
+    box-shadow: var(--shadow-comic);
     transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
   .panel:hover {
     transform: translate(-3px, -3px);
     box-shadow: 9px 9px 0 0 hsl(var(--ink));
+  }
+
+  /* Marco ornamental tipo póster vintage */
+  .ornate-frame {
+    border: 5px solid hsl(var(--ink));
+    outline: 3px solid hsl(var(--ink));
+    outline-offset: 6px;
+    box-shadow: 0 0 0 9px hsl(var(--secondary));
+  }
+
+  /* Bocadillo de cómic (speech bubble) */
+  .burst {
+    clip-path: polygon(
+      50% 0%, 58% 8%, 70% 3%, 72% 15%, 85% 12%, 82% 25%,
+      96% 28%, 88% 40%, 100% 50%, 88% 60%, 96% 72%, 82% 75%,
+      85% 88%, 72% 85%, 70% 97%, 58% 92%, 50% 100%, 42% 92%,
+      30% 97%, 28% 85%, 15% 88%, 18% 75%, 4% 72%, 12% 60%,
+      0% 50%, 12% 40%, 4% 28%, 18% 25%, 15% 12%, 28% 15%,
+      30% 3%, 42% 8%
+    );
+  }
+
+  /* Texto con stroke estilo cómic */
+  .text-stroke {
+    -webkit-text-stroke: 2px hsl(var(--ink));
+    text-shadow:
+      3px 3px 0 hsl(var(--ink)),
+      -1px -1px 0 hsl(var(--ink)),
+      1px -1px 0 hsl(var(--ink)),
+      -1px 1px 0 hsl(var(--ink));
+    paint-order: stroke fill;
+  }
+
+  /* Textura papel envejecido para hero */
+  .paper-vintage {
+    background-color: hsl(40 50% 85%);
+    background-image:
+      radial-gradient(ellipse at 20% 30%, hsl(35 40% 70% / 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 70%, hsl(30 40% 65% / 0.3) 0%, transparent 50%),
+      radial-gradient(hsl(var(--ink) / 0.06) 1px, transparent 1.2px);
+    background-size: 100% 100%, 100% 100%, 5px 5px;
   }
 }
