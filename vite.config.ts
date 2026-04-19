@@ -5,9 +5,11 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/san-gabriel-impacto-2001/",
   server: {
     host: "::",
     port: 8080,
+    allowedHosts: ["promo2001.nimblersoft.com"],
     hmr: {
       overlay: false,
     },
