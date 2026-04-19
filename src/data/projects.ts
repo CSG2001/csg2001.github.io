@@ -262,7 +262,7 @@ export const projects: Project[] = [
   {
     slug: "brigada-medica-gabrielina-2026",
     title: "Brigada Médica Gabrielina 2026",
-    description: "Atención de salud y provisión de Medicines.",
+    description: "Atención de salud y provisión de Medicinas.",
     emoji: "⚕️",
     accent: "accent",
     images: [
@@ -282,7 +282,7 @@ export const projects: Project[] = [
       "/images/brigada-16.jpg",
     ],
     story:
-      "Médicos, odontólogos y profesionales de la salud de la promoción se unieron para llevar atención y medicinas a comunidades vulnerables. Una jornada que recordó por qué fuimos formados como hombres para los demás.",
+      "Médicos, psicólogos y profesionales de la salud de la promoción se unieron para llevar atención y medicinas a comunidades vulnerables. Una jornada que recordó por qué fuimos formados como hombres para los demás.",
     gallery: [
       { caption: "", accent: "primary" },
       { caption: "", accent: "secondary" },
