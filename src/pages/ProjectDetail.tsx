@@ -1,8 +1,9 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ArrowLeft } from "lucide-react";
 import { projects, accentBg } from "@/data/projects";
 import { cn } from "@/lib/utils";
+import { Lightbox, LightboxTrigger, type LightboxImage } from "@/components/Lightbox";
 
 const tiltMap = ["-rotate-2", "rotate-1", "-rotate-1", "rotate-2", "-rotate-[1.5deg]", "rotate-[1.5deg]"];
 
@@ -12,6 +13,28 @@ const comicImageClasses = "w-full h-full object-cover border-4 border-black shad
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const project = projects.find((p) => p.slug === slug);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const allImages = useMemo<LightboxImage[]>(() => {
+    if (!project) return [];
+    const images: LightboxImage[] = [];
+    if (project.images?.[0]) {
+      images.push({ src: project.images[0], alt: project.title, caption: project.imageCaption || "Foto principal" });
+    }
+    if (project.images?.[1]) {
+      images.push({ src: project.images[1], alt: `${project.title} - imagen secundaria` });
+    }
+    if (project.gallery) {
+      project.gallery.forEach((item, i) => {
+        const imgIndex = i + 2;
+        if (project.images?.[imgIndex]) {
+          images.push({ src: project.images[imgIndex], alt: item.caption, caption: item.caption });
+        }
+      });
+    }
+    return images;
+  }, [project]);
 
    useEffect(() => {
      window.scrollTo({ top: 0 });
@@ -41,6 +64,7 @@ const ProjectDetail = () => {
      <div className="min-h-screen">
       {/* HERO DE IMPACTO */}
       <header className={cn("relative overflow-hidden border-b-[4px] border-foreground", accentBg[project.accent])}>
+        <img src="/images/logo-2001.png" alt="Promo 2001 Logo" className="absolute top-4 right-4 md:top-8 md:right-8 z-20 w-16 md:w-24" />
         <div className="absolute inset-0 halftone opacity-25" />
         <div className="container relative mx-auto px-4 py-10 md:py-16">
           {/* Botón Volver - burbuja de cómic */}
@@ -76,11 +100,15 @@ const ProjectDetail = () => {
               <div className="panel overflow-hidden rotate-2 bg-background">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   {project.images && project.images.length > 0 ? (
-                    <img
-                      src={project.images[0]}
-                      alt={project.title}
-                      className={comicImageClasses}
-                    />
+                    <LightboxTrigger
+                      onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }}
+                    >
+                      <img
+                        src={project.images[0]}
+                        alt={project.title}
+                        className={comicImageClasses}
+                      />
+                    </LightboxTrigger>
                   ) : (
                     <>
                       <div className="absolute inset-0 halftone opacity-40" />
@@ -90,7 +118,7 @@ const ProjectDetail = () => {
                     </>
                   )}
                   <span className="absolute bottom-3 right-3 text-xs font-bold uppercase tracking-wider bg-background text-foreground px-2.5 py-1.5 rounded-md border-2 border-foreground z-10">
-                    {project.images && project.images.length > 0 ? "Fotoprincipal" : "Ilustración principal"}
+                    {project.imageCaption || (project.images && project.images.length > 0 ? "Foto principal" : "Ilustración principal")}
                   </span>
                 </div>
               </div>
@@ -114,15 +142,19 @@ const ProjectDetail = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10 items-center max-w-6xl mx-auto">
+<div className="grid md:grid-cols-2 gap-10 items-center max-w-6xl mx-auto">
             <div className="panel overflow-hidden -rotate-1">
               <div className={cn("relative aspect-square overflow-hidden", accentBg[project.accent])}>
                 {project.images && project.images.length > 1 ? (
-                  <img
-                    src={project.images[1]}
-                    alt={`${project.title} - imagen secundaria`}
-                    className={comicImageClasses}
-                  />
+                  <LightboxTrigger
+                    onClick={() => { setLightboxIndex(1); setLightboxOpen(true); }}
+                  >
+                    <img
+                      src={project.images[1]}
+                      alt={`${project.title} - imagen secundaria`}
+                      className={comicImageClasses}
+                    />
+                  </LightboxTrigger>
                 ) : (
                   <>
                     <div className="absolute inset-0 halftone opacity-40" />
@@ -132,7 +164,7 @@ const ProjectDetail = () => {
                   </>
                 )}
                 <span className="absolute bottom-3 left-3 text-xs font-bold uppercase tracking-wider bg-background text-foreground px-2.5 py-1.5 rounded-md border-2 border-foreground z-10">
-                  {project.images && project.images.length > 1 ? "Foto adicional" : "Foto de la historia"}
+                   
                 </span>
               </div>
             </div>
@@ -168,52 +200,50 @@ const ProjectDetail = () => {
             </p>
           </div>
 
-           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-             {project.gallery.map((item, i) => {
-               let imageUrl: string | null = null;
-               // Access images by literal indices to prevent tree-shaking
-               if (i === 0 && project.images.length > 2) imageUrl = project.images[2];
-               else if (i === 1 && project.images.length > 3) imageUrl = project.images[3];
-               else if (i === 2 && project.images.length > 4) imageUrl = project.images[4];
-               else if (i === 3 && project.images.length > 5) imageUrl = project.images[5];
+{(() => {
+              const galleryItems = project.gallery.slice(0, 12).filter((_, i) => project.images.length > i + 2);
+              if (galleryItems.length === 0) return null;
 
-               return (
-                 <figure
-                   key={i}
-                   className={cn(
-                    "panel overflow-hidden relative",
-                    tiltMap[i % tiltMap.length]
-                  )}
-                >
-                  <div className={cn("relative aspect-[4/3] overflow-hidden", accentBg[item.accent])}>
-                    {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={item.caption}
-                        className={comicImageClasses}
-                      />
-                    ) : (
-                      <>
-                        <div className="absolute inset-0 halftone opacity-40" />
-                        <span className="text-7xl drop-shadow-[3px_3px_0_hsl(var(--ink))] relative z-10 flex items-center justify-center h-full" aria-hidden>
-                          📸
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  {/* Sticker caption */}
-                  <figcaption
-                    className={cn(
-                      "absolute -bottom-3 left-4 right-4 bg-background text-foreground font-display text-base px-3 py-2 rounded-lg border-[3px] border-foreground comic-shadow-sm text-center",
-                      i % 2 === 0 ? "-rotate-2" : "rotate-2"
-                    )}
-                  >
-                    {item.caption}
-                  </figcaption>
-                </figure>
+              return (
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
+                  {galleryItems.map((item, i) => {
+                    const imageIndex = i + 2;
+                    const imageUrl = project.images[imageIndex];
+                    const originalIndex = project.gallery.findIndex((g) => g === item);
+
+                    return (
+                      <figure
+                        key={originalIndex}
+                        className={cn(
+                          "panel overflow-hidden relative",
+                          tiltMap[originalIndex % tiltMap.length]
+                        )}
+                      >
+                        <div className={cn("relative aspect-[4/3] overflow-hidden", accentBg[item.accent])}>
+                          <LightboxTrigger
+                            onClick={() => { setLightboxIndex(imageIndex); setLightboxOpen(true); }}
+                          >
+                            <img
+                              src={imageUrl}
+                              alt={item.caption}
+                              className={comicImageClasses}
+                            />
+                          </LightboxTrigger>
+                        </div>
+                        <figcaption
+                          className={cn(
+                            "absolute -bottom-3 left-4 right-4 bg-background text-foreground font-display text-base px-3 py-2 rounded-lg border-[3px] border-foreground comic-shadow-sm text-center",
+                            originalIndex % 2 === 0 ? "-rotate-2" : "rotate-2"
+                          )}
+                        >
+                          {item.caption}
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
+                </div>
               );
-            })}
-          </div>
+            })()}
 
           <div className="text-center mt-16">
             <Link
@@ -225,6 +255,15 @@ const ProjectDetail = () => {
           </div>
         </div>
       </section>
+      
+      {allImages.length > 0 && (
+        <Lightbox
+          images={allImages}
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+          initialIndex={lightboxIndex}
+        />
+      )}
     </div>
   );
 };
