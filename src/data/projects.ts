@@ -17,6 +17,36 @@ const galleryItem = (accent: Accent) => ({ caption: "", accent });
 
 export const projects: Project[] = [
   {
+    slug: "misa-120-anos-milagro",
+    date: "20 Abr 2026",
+    title: "Misa 120 Años del Milagro",
+    description: "Conmemoración histórica de los 120 años del Milagro de la Dolorosa del Colegio.",
+    emoji: "🌟",
+    accent: "accent",
+    images: [
+      "/images/milagro-120/milagro-0.jpg",
+      "/images/milagro-120/milagro-33.jpg",
+      "/images/milagro-120/milagro-34.jpg",
+      "/images/milagro-120/milagro-39.jpg",
+      "/images/milagro-120/milagro-31.jpg",
+      "/images/milagro-120/milagro-32.jpg",
+      "/images/milagro-120/milagro-36.jpg",
+      "/images/milagro-120/milagro-38.jpg",
+      "/images/milagro-120/milagro-37.jpg",
+      "/images/milagro-120/milagro-13.jpg",
+      "/images/milagro-120/milagro-1.jpg",
+      "/images/milagro-120/milagro-10.jpg",
+      "/images/milagro-120/milagro-15.jpg",
+      "/images/milagro-120/milagro-2.jpg",
+    ],
+    story:
+      "El 20 de abril de 2026 nos reunimos para una fecha que trasciende el tiempo: los 120 años del Milagro de la Dolorosa. Fue un encuentro de fe profunda, donde la promoción 2001 se unió a la comunidad gabrielina para renovar nuestro compromiso con los valores que nos formaron. Entre cantos, oraciones y el recuerdo del parpadeo milagroso, sentimos más que nunca que nuestra Madre nos sigue cuidando y guiando hacia el servicio a los demás.",
+    gallery: Array.from({ length: 12 }, (_, i) => ({
+      caption: `Conmemoración 120 años - ${i + 1}`,
+      accent: (["primary", "secondary", "accent", "orange", "green"] as Accent[])[i % 5],
+    })),
+  },
+  {
     slug: "chompa-de-la-generacion",
     date: "20 Abr 2025",
     title: "Chompa de la Generación",

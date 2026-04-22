@@ -38,10 +38,11 @@ src/
 │   └── hero-school.jpg  # Hero image
 ├── components/
 │   ├── ComicCard.tsx    # Project card: image/emoji, title, date, desc, tilt rotation
+│   ├── HighlightedComicCard.tsx # Featured project hero card
 │   ├── NavLink.tsx      # React Router NavLink wrapper with activeClassName support
 │   └── ui/              # 54 shadcn/ui components (Radix UI + Tailwind)
 ├── data/
-│   └── projects.ts      # 13 project definitions + accentBg color map
+│   └── projects.ts      # 14 project definitions + accentBg color map
 ├── hooks/
 │   ├── use-mobile.tsx   # Mobile breakpoint hook (768px)
 │   └── use-toast.ts     # Toast hook (sonner)
@@ -80,7 +81,7 @@ interface Project {
 }
 ```
 
-13 projects covering charity, religious ceremonies, reunions, and social events.
+14 projects covering charity, religious ceremonies, reunions, and social events.
 
 ## Design System
 

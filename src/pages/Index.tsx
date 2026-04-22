@@ -1,11 +1,15 @@
 import heroImg from "@/assets/hero-school.jpg";
 import { ComicCard } from "@/components/ComicCard";
+import { HighlightedComicCard } from "@/components/HighlightedComicCard";
 import { projects } from "@/data/projects";
 
 const Index = () => {
+  const featuredProject = projects[0];
+  const otherProjects = projects.slice(1);
+
   return (
     <div className="min-h-screen">
-      {/* HERO */}
+      {/* HERO section (lines 8-53) */}
       <header className="relative overflow-hidden bg-primary text-primary-foreground border-b-[4px] border-foreground">
         <img src="/images/logo-2001.png" alt="Promo 2001 Logo" className="absolute top-4 right-4 md:top-8 md:right-8 z-20 w-16 md:w-24" />
         <div className="absolute inset-0 halftone opacity-20" />
@@ -52,7 +56,7 @@ const Index = () => {
         </div>
       </header>
 
-      {/* INTRO */}
+      {/* INTRO section (lines 55-85) */}
       <section id="intro" className="py-16 md:py-24 relative overflow-hidden">
         <div className="container relative mx-auto px-4 max-w-4xl z-10">
           <div className="panel relative overflow-hidden p-8 md:p-12 bg-card text-center -rotate-[0.5deg]">
@@ -84,7 +88,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* GALERÍA */}
+      {/* GALERÍA section */}
       <section id="galeria" className="py-12 md:py-20 bg-muted/40 border-y-[4px] border-foreground relative">
         <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
         <div className="container relative mx-auto px-4">
@@ -100,8 +104,15 @@ const Index = () => {
             </p>
           </div>
 
+          {/* Feature project */}
+          {featuredProject && (
+            <div className="max-w-6xl mx-auto">
+              <HighlightedComicCard {...featuredProject} />
+            </div>
+          )}
+
           <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {projects.map((card, i) => (
+            {otherProjects.map((card, i) => (
               <ComicCard key={card.slug} index={i} {...card} />
             ))}
           </div>
