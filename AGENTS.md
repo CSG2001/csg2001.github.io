@@ -49,7 +49,7 @@ src/
 ├── lib/
 │   └── utils.ts         # cn() — clsx + tailwind-merge
 ├── pages/
-│   ├── Index.tsx        # Home: hero + 13-project gallery grid
+│   ├── Index.tsx        # Home: hero + Sponsors Section + 13-project gallery grid
 │   ├── ProjectDetail.tsx# /proyecto/:slug — hero, story, gallery, back button
 │   └── NotFound.tsx     # 404
 └── test/

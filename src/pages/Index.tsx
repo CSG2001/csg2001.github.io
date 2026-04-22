@@ -1,11 +1,33 @@
+import { useState, useMemo } from "react";
 import heroImg from "@/assets/hero-school.jpg";
 import { ComicCard } from "@/components/ComicCard";
 import { HighlightedComicCard } from "@/components/HighlightedComicCard";
 import { projects } from "@/data/projects";
+import { Lightbox, LightboxTrigger, type LightboxImage } from "@/components/Lightbox";
 
 const Index = () => {
   const featuredProject = projects[0];
   const otherProjects = projects.slice(1);
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
+  const sponsorImagesList = [
+    "sponsor-1.jpg",
+    "sponsor-2.jpg",
+    "sponsor-3.jpg",
+    "sponsor-4.jpg",
+    "sponsor-5.jpg",
+    "sponsor-6.jpg",
+  ];
+
+  const sponsorLightboxImages = useMemo<LightboxImage[]>(() => 
+    sponsorImagesList.map((img, idx) => ({
+      src: `/images/sponsors/${img}`,
+      alt: `Auspiciante ${idx + 1}`,
+      caption: `Gracias por apoyar a la Promo 2001`
+    }))
+  , []);
 
   return (
     <div className="min-h-screen">
@@ -60,35 +82,103 @@ const Index = () => {
       <section id="intro" className="py-16 md:py-24 relative overflow-hidden">
         <div className="container relative mx-auto px-4 max-w-4xl z-10">
           <div className="panel relative overflow-hidden p-8 md:p-12 bg-card text-center -rotate-[0.5deg]">
-            <img 
-              src="/images/logo-2001.png" 
-              alt="Logo 2001 Espejado" 
-              className="absolute left-[-2rem] md:left-[-1rem] top-1/2 -translate-y-1/2 w-48 -scale-x-100 opacity-20 z-0 pointer-events-none" 
+            <img
+              src="/images/logo-2001.png"
+              alt="Logo 2001 Espejado"
+              className="absolute left-[-2rem] md:left-[-1rem] top-1/2 -translate-y-1/2 w-48 -scale-x-100 opacity-20 z-0 pointer-events-none"
             />
-            <img 
-              src="/images/dolorosa.jpg" 
-              alt="La Dolorosa" 
-              className="absolute right-[-2rem] md:right-[-1rem] top-1/2 -translate-y-1/2 w-48 opacity-20 z-0 pointer-events-none" 
+            <img
+              src="/images/dolorosa.jpg"
+              alt="La Dolorosa"
+              className="absolute right-[-2rem] md:right-[-1rem] top-1/2 -translate-y-1/2 w-48 opacity-20 z-0 pointer-events-none"
             />
             <div className="relative z-10">
               <span className="font-display text-secondary-foreground bg-secondary inline-block px-3 py-1 rounded-md border-[3px] border-foreground text-sm mb-4">
                 120 años · Milagro de la Dolorosa
               </span>
-            <h2 className="text-3xl md:text-4xl mb-5">
-              Ser <span className="text-primary">Gabrielino</span> es una huella que no se borra.
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              A 120 años del Milagro de la Dolorosa, nuestra promoción honra una herencia
-              de fe, servicio y hermandad. Veinticinco años después de cruzar las puertas del
-              colegio, seguimos el llamado a <strong className="text-foreground">ser más para servir mejor</strong>:
-              construyendo, acompañando y multiplicando el bien en cada rincón donde la vida nos llevó.
-            </p>
+              <h2 className="text-3xl md:text-4xl mb-5">
+                Ser <span className="text-primary">Gabrielino</span> es una huella que no se borra.
+              </h2>
+              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                A 120 años del Milagro de la Dolorosa, nuestra promoción honra una herencia
+                de fe, servicio y hermandad. Veinticinco años después de cruzar las puertas del
+                colegio, seguimos el llamado a <strong className="text-foreground">ser más para servir mejor</strong>:
+                construyendo, acompañando y multiplicando el bien en cada rincón donde la vida nos llevó.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
+      {/* SPONSORS section */}
+      <section className="py-16 md:py-24 bg-secondary/5 relative overflow-hidden border-b-[4px] border-foreground">
+        <div className="absolute inset-0 halftone opacity-10 pointer-events-none" />
+        <div className="container relative mx-auto px-4">
+          <div className="grid lg:grid-cols-5 gap-12 items-center">
+            <div className="lg:col-span-2 space-y-8 order-2 lg:order-1">
+              <div className="inline-block font-display text-xl bg-orange text-orange-foreground px-6 py-2 rounded-xl border-[4px] border-foreground comic-shadow-sm -rotate-2 mb-2">
+                ¡TE ESPERAMOS! 🥐☕
+              </div>
+              <h2 className="font-display text-5xl md:text-7xl text-primary leading-[0.85] drop-shadow-[4px_4px_0_white]">
+                Desayuno de <br />
+                <span className="text-orange">Reencuentro</span> <br />
+                <span className="text-accent">Promo 2001</span>
+              </h2>
+              <p className="text-xl text-muted-foreground leading-relaxed font-medium">
+                Una mañana para volver a casa, compartir el pan y renovar la hermandad que nos une desde hace 25 años. ¡Ven a vivir este momento histórico!
+              </p>
+
+              <div className="panel bg-background p-8 border-[4px] border-foreground rotate-1 relative">
+                <div className="absolute -top-6 -right-6 bg-accent text-accent-foreground font-display text-lg px-4 py-1 border-[3px] border-foreground comic-shadow rotate-12">
+                  AUSPICIANTES
+                </div>
+                <div className="grid grid-cols-3 gap-6">
+                  {sponsorImagesList.map((img, idx) => (
+                    <LightboxTrigger 
+                      key={idx} 
+                      onClick={() => { setLightboxIndex(idx); setLightboxOpen(true); }}
+                      className="aspect-square bg-white border-[3px] border-foreground rounded-xl overflow-hidden flex items-center justify-center p-3 hover:scale-110 hover:-rotate-3 transition-all cursor-pointer comic-shadow-sm group"
+                    >
+                      <img
+                        src={`/images/sponsors/${img}`}
+                        alt={`Sponsor ${idx + 1}`}
+                        className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                      />
+                    </LightboxTrigger>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-3 relative order-1 lg:order-2">
+              <div className="relative z-10 panel overflow-hidden -rotate-2 border-[8px] border-foreground comic-shadow-lg group">
+                <img
+                  src="/sources/invitation/desayuno-1.jpeg"
+                  alt="Invitación al Desayuno"
+                  className="w-full h-auto contrast-110 brightness-105 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                {/* <div className="absolute top-8 right-8 bg-secondary text-secondary-foreground font-display text-4xl px-6 py-3 border-[4px] border-foreground comic-shadow rotate-12 group-hover:rotate-6 transition-transform">
+                  ¡GRATIS!
+                </div> */}
+                {/* <div className="absolute bottom-8 left-8 bg-white text-primary font-display text-2xl px-6 py-2 border-[4px] border-foreground comic-shadow -rotate-3">
+                  Sábado 25 de Abril
+                </div> */}
+              </div>
+
+              {/* Decorative elements */}
+              <div className="absolute -bottom-10 -right-6 w-32 h-32 bg-orange border-[4px] border-foreground rounded-full z-0 comic-shadow flex items-center justify-center font-display text-white text-4xl rotate-12 animate-bounce">
+                ¡PUM!
+              </div>
+              <div className="absolute -top-10 -left-10 w-24 h-24 bg-accent border-[4px] border-foreground rotate-45 z-0 comic-shadow" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       {/* GALERÍA section */}
+
       <section id="galeria" className="py-12 md:py-20 bg-muted/40 border-y-[4px] border-foreground relative">
         <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
         <div className="container relative mx-auto px-4">
@@ -119,43 +209,43 @@ const Index = () => {
         </div>
       </section>
 
-       {/* FOOTER */}
-       <footer className="bg-primary text-primary-foreground border-t-[4px] border-foreground relative overflow-hidden">
-         <div className="absolute inset-0 halftone opacity-20" />
-         <div className="container relative mx-auto px-4 py-14 text-center space-y-6">
-            <div className="flex justify-center items-center gap-6 mb-6">
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-[4px] border-foreground comic-shadow overflow-hidden bg-background">
-                <img
-                  src="/images/logo-2001.png"
-                  alt="Logo Promo 2001"
-                  className="w-full h-full object-contain p-2"
-                />
-              </div>
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-[4px] border-foreground comic-shadow overflow-hidden bg-background">
-                <img
-                  src="https://www.csgabriel.edu.ec/wp-content/uploads/2026/01/lobito.png"
-                  alt="Logo Colegio San Gabriel"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+      {/* FOOTER */}
+      <footer className="bg-primary text-primary-foreground border-t-[4px] border-foreground relative overflow-hidden">
+        <div className="absolute inset-0 halftone opacity-20" />
+        <div className="container relative mx-auto px-4 py-14 text-center space-y-6">
+          <div className="flex justify-center items-center gap-6 mb-6">
+            <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-[4px] border-foreground comic-shadow overflow-hidden bg-background">
+              <img
+                src="/images/logo-2001.png"
+                alt="Logo Promo 2001"
+                className="w-full h-full object-contain p-2"
+              />
             </div>
-           <p className="text-xs uppercase tracking-widest opacity-80"></p>
-           <h3 className="font-display text-3xl md:text-5xl text-secondary drop-shadow-[3px_3px_0_hsl(var(--ink))]">
-             Ser más para servir mejor.
-           </h3>
-           <p className="font-display text-2xl text-accent">— Promo 2001 —</p>
-           <p className="text-sm opacity-75 pt-4">
-             © {new Date().getFullYear()} · Promoción 2001 · Colegio San Gabriel · Quito, Ecuador
-           </p>
-         </div>
-       </footer>
+            <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-[4px] border-foreground comic-shadow overflow-hidden bg-background">
+              <img
+                src="https://www.csgabriel.edu.ec/wp-content/uploads/2026/01/lobito.png"
+                alt="Logo Colegio San Gabriel"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <p className="text-xs uppercase tracking-widest opacity-80"></p>
+          <h3 className="font-display text-3xl md:text-5xl text-secondary drop-shadow-[3px_3px_0_hsl(var(--ink))]">
+            Ser más para servir mejor.
+          </h3>
+          <p className="font-display text-2xl text-accent">— Promo 2001 —</p>
+          <p className="text-sm opacity-75 pt-4">
+            © {new Date().getFullYear()} · Promoción 2001 · Colegio San Gabriel · Quito, Ecuador
+          </p>
+        </div>
+      </footer>
 
-       {/* NIMBLERSOFT FOOTER */}
-       <footer className="bg-background text-foreground border-t-[4px] border-foreground py-8">
-         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-<div className="flex items-center gap-3">
-              <a href="https://www.nimblersoft.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
-                <svg viewBox="0 0 32 32" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
+      {/* NIMBLERSOFT FOOTER */}
+      <footer className="bg-background text-foreground border-t-[4px] border-foreground py-8">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <a href="https://www.nimblersoft.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+              <svg viewBox="0 0 32 32" className="w-10 h-10" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="#22d3ee" />
@@ -171,26 +261,33 @@ const Index = () => {
                   d="M16 2 C16 10 22 16 30 16 C22 16 16 22 16 30 C16 22 10 16 2 16 C10 16 16 10 16 2 Z"
                   fill="url(#logo-grad)"
                   mask="url(#n-mask)"
-/>
+                />
               </svg>
-              </a>
-              <a href="https://www.nimblersoft.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity font-display text-lg font-semibold">
-                <span className="font-display text-lg font-semibold">Nimblersoft</span>
-              </a>
-           </div>
-           <p className="text-sm text-muted-foreground text-center md:text-right">
-             Desarrollado con Inteligencia Artificial por{" "}
-             <a
-               href="https://www.nimblersoft.com"
-               target="_blank"
-               rel="noopener noreferrer"
-               className="font-semibold underline underline-offset-2 hover:text-primary transition-colors"
-             >
-               Nimblersoft
-             </a>
-           </p>
-         </div>
-       </footer>
+            </a>
+            <a href="https://www.nimblersoft.com" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity font-display text-lg font-semibold">
+              <span className="font-display text-lg font-semibold">Nimblersoft</span>
+            </a>
+          </div>
+          <p className="text-sm text-muted-foreground text-center md:text-right">
+            Desarrollado con Inteligencia Artificial por{" "}
+            <a
+              href="https://www.nimblersoft.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold underline underline-offset-2 hover:text-primary transition-colors"
+            >
+              Nimblersoft
+            </a>
+          </p>
+        </div>
+      </footer>
+
+      <Lightbox
+        images={sponsorLightboxImages}
+        open={lightboxOpen}
+        onOpenChange={setLightboxOpen}
+        initialIndex={lightboxIndex}
+      />
     </div>
   );
 };
