@@ -56,7 +56,6 @@ src/
 │   └── images/
 │       ├── logo-2001.png    # Promo logo
 │       ├── logo-colegio.png # School logo
-│       └── promo/           # 10 Pop-Art promotional images for social media
 └── test/
     ├── example.test.ts
     └── setup.ts
