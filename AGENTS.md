@@ -37,6 +37,13 @@ src/
 ├── assets/
 │   └── hero-school.jpg  # Hero image
 ├── components/
+│   ├── sections/        # Homepage sections
+│   │   ├── Hero.tsx
+│   │   ├── Intro.tsx
+│   │   ├── Sponsors.tsx
+│   │   ├── Gallery.tsx
+│   │   ├── Footer.tsx
+│   │   └── NimblersoftFooter.tsx
 │   ├── ComicCard.tsx    # Project card: image/emoji, title, date, desc, tilt rotation
 │   ├── HighlightedComicCard.tsx # Featured project hero card
 │   ├── NavLink.tsx      # React Router NavLink wrapper with activeClassName support
@@ -102,7 +109,7 @@ interface Project {
 | background | 45 60% 97% | Cream |
 | ink | 222 70% 8% | Near black |
 
-**Comic utilities (index.css):** `.panel`, `.halftone`, `.comic-border`, `font-display`. Hover on `.panel` translates -3px -3px.
+**Comic utilities (index.css):** `.panel`, `.halftone`, `.comic-border`, `font-display`, `.animate-logo-highlight`. Hover on `.panel` translates -3px -3px.
 
 **Shadows:** `--comic-shadow` (6px 6px offset, black), `-sm`, `-lg` variants.
 
