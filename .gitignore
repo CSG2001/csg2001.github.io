@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 # Agent AI
-# .playwright-mcp
+.playwright-mcp
 
 # Editor directories and files
 .vscode/*
