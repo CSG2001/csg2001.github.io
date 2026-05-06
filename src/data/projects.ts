@@ -17,6 +17,45 @@ const galleryItem = (accent: Accent) => ({ caption: "", accent });
 
 export const projects: Project[] = [
   {
+    slug: "desayuno-ex-alumnos",
+    title: "El Desayuno de Ex-alumnos",
+    description: "Desayuno de ex-alumnos.",
+    emoji: "☕",
+    accent: "orange",
+    images: Array.from({ length: 52 }, (_, i) => `/images/desayuno/desayuno-${i + 1}.jpg`),
+    story: "El reencuentro mañanero que nos volvió a juntar. Un desayuno lleno de recuerdos y buena compañía.",
+    gallery: Array.from({ length: 50 }, (_, i) => ({
+      caption: `Momento ${i + 1}`,
+      accent: (["primary", "secondary", "accent", "orange", "green"] as Accent[])[i % 5],
+    })),
+  },
+  {
+    slug: "misa-ex-alumnos",
+    title: "La Misa de Ex-alumnos",
+    description: "Misa de ex-alumnos celebrando nuestro aniversario.",
+    emoji: "⛪",
+    accent: "primary",
+    images: Array.from({ length: 35 }, (_, i) => `/images/misa-exalumnos/misa-exalumnos-${i + 1}.jpg`),
+    story: "Una ceremonia especial para dar gracias por todo lo vivido en nuestras vidas y recordar a los que ya no están.",
+    gallery: Array.from({ length: 33 }, (_, i) => ({
+      caption: `Misa ${i + 1}`,
+      accent: (["primary", "secondary", "accent", "orange", "green"] as Accent[])[i % 5],
+    })),
+  },
+  {
+    slug: "celebracion-after",
+    title: "El After de Celebración 25 Años",
+    description: "La celebración después del reencuentro.",
+    emoji: "🎉",
+    accent: "secondary",
+    images: Array.from({ length: 80 }, (_, i) => `/images/celebracion-after/celebracion-after-${i + 1}.jpg`),
+    story: "La fiesta y el after que coronaron los 25 años. Risas, brindis y mucha diversión.",
+    gallery: Array.from({ length: 78 }, (_, i) => ({
+      caption: `Fiesta ${i + 1}`,
+      accent: (["primary", "secondary", "accent", "orange", "green"] as Accent[])[i % 5],
+    })),
+  },
+  {
     slug: "misa-120-anos-milagro",
     date: "20 Abr 2026",
     title: "Misa 120 Años del Milagro",
@@ -47,9 +86,9 @@ export const projects: Project[] = [
     })),
   },
   {
-    slug: "desayuno-de-ex-alumnos",
-    title: "Desayuno de Ex-alumnos",
-    description: "Reencuentro matutino con el sabor de la hermandad.",
+    slug: "invitacion-desayuno-de-ex-alumnos",
+    title: "Invitación Desayuno de Ex-alumnos",
+    description: "Invitación al desayuno de ex-alumnos.",
     emoji: "🥐",
     accent: "secondary",
     images: [

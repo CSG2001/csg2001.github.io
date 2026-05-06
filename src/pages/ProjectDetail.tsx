@@ -15,6 +15,8 @@ const ProjectDetail = () => {
   const project = projects.find((p) => p.slug === slug);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 12;
 
   const allImages = useMemo<LightboxImage[]>(() => {
     if (!project) return [];
@@ -39,6 +41,7 @@ const ProjectDetail = () => {
    useEffect(() => {
      window.scrollTo({ top: 0 });
      if (project) document.title = `${project.title} · Promo 2001 San Gabriel`;
+     setPage(1);
    }, [project]);
 
   if (!project) {
@@ -201,46 +204,75 @@ const ProjectDetail = () => {
           </div>
 
 {(() => {
-              const galleryItems = project.gallery.slice(0, 12).filter((_, i) => project.images.length > i + 2);
+              const galleryItems = project.gallery
+                .map((item, index) => ({ item, originalIndex: index }))
+                .filter(({ originalIndex }) => project.images.length > originalIndex + 2);
+              
               if (galleryItems.length === 0) return null;
 
-              return (
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
-                  {galleryItems.map((item, i) => {
-                    const imageIndex = i + 2;
-                    const imageUrl = project.images[imageIndex];
-                    const originalIndex = project.gallery.findIndex((g) => g === item);
+              const totalPages = Math.ceil(galleryItems.length / itemsPerPage);
+              const paginatedItems = galleryItems.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-                    return (
-                      <figure
-                        key={originalIndex}
-                        className={cn(
-                          "panel overflow-hidden relative",
-                          tiltMap[originalIndex % tiltMap.length]
-                        )}
-                      >
-                        <div className={cn("relative aspect-[4/3] overflow-hidden", accentBg[item.accent])}>
-                          <LightboxTrigger
-                            onClick={() => { setLightboxIndex(imageIndex); setLightboxOpen(true); }}
-                          >
-                            <img
-                              src={imageUrl}
-                              alt={item.caption}
-                              className={comicImageClasses}
-                            />
-                          </LightboxTrigger>
-                        </div>
-                        <figcaption
+              return (
+                <div className="space-y-12">
+                  <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-6xl mx-auto">
+                    {paginatedItems.map(({ item, originalIndex }) => {
+                      const imageIndex = originalIndex + 2;
+                      const imageUrl = project.images[imageIndex];
+
+                      return (
+                        <figure
+                          key={originalIndex}
                           className={cn(
-                            "absolute -bottom-3 left-4 right-4 bg-background text-foreground font-display text-base px-3 py-2 rounded-lg border-[3px] border-foreground comic-shadow-sm text-center",
-                            originalIndex % 2 === 0 ? "-rotate-2" : "rotate-2"
+                            "panel overflow-hidden relative",
+                            tiltMap[originalIndex % tiltMap.length]
                           )}
                         >
-                          {item.caption}
-                        </figcaption>
-                      </figure>
-                    );
-                  })}
+                          <div className={cn("relative aspect-[4/3] overflow-hidden", accentBg[item.accent])}>
+                            <LightboxTrigger
+                              onClick={() => { setLightboxIndex(imageIndex); setLightboxOpen(true); }}
+                            >
+                              <img
+                                src={imageUrl}
+                                alt={item.caption}
+                                className={comicImageClasses}
+                              />
+                            </LightboxTrigger>
+                          </div>
+                          <figcaption
+                            className={cn(
+                              "absolute -bottom-3 left-4 right-4 bg-background text-foreground font-display text-base px-3 py-2 rounded-lg border-[3px] border-foreground comic-shadow-sm text-center",
+                              originalIndex % 2 === 0 ? "-rotate-2" : "rotate-2"
+                            )}
+                          >
+                            {item.caption}
+                          </figcaption>
+                        </figure>
+                      );
+                    })}
+                  </div>
+                  
+                  {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-6 mt-8">
+                      <button
+                        onClick={() => setPage(p => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="font-display px-5 py-2.5 bg-background border-[3px] border-foreground rounded-xl comic-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] transition-transform disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
+                      >
+                        Anterior
+                      </button>
+                      <span className="font-display text-xl">
+                        Página {page} de {totalPages}
+                      </span>
+                      <button
+                        onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                        disabled={page === totalPages}
+                        className="font-display px-5 py-2.5 bg-background border-[3px] border-foreground rounded-xl comic-shadow hover:translate-x-[-2px] hover:translate-y-[-2px] transition-transform disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
+                      >
+                        Siguiente
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })()}
